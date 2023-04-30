@@ -2,16 +2,12 @@ package com.example.easydonatemaster.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 @Getter
@@ -21,17 +17,38 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
-    private String fullName;
+    private int id;
+    @NonNull
+    private String firstName;
+    @NonNull
+    private String lastName;
+    @NonNull
+    private String username;
+    @NonNull
     private String email;
+    @NonNull
     private String password;
     @Temporal(TemporalType.DATE)
     private Date birthday;
     @Temporal(TemporalType.DATE)
     private Date subscriptionDate;
+    @NonNull
     private int phoneNumber;
-    @Enumerated(EnumType.STRING)
-    private RoleType role;
+    String cinUser;
+    @JsonIgnore
+    Boolean status;
+    @JsonIgnore
+    String code;
+    @JsonIgnore
+    LocalDateTime createdAt;
+   // @Enumerated(EnumType.STRING)
+   // private RoleType role;
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    Set<Role> roles = new HashSet<>();
     //admin accepts
     @OneToOne
     private Candidacy candidacy;
@@ -53,10 +70,10 @@ public class User implements Serializable {
     //only admin
     @OneToMany(mappedBy = "organizer")
     private List<Event> events;
-    @OneToMany(mappedBy = "organizer")
+    @OneToMany(mappedBy = "organizer",fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Fundraiser> fundraiserList;
     @OneToMany(mappedBy = "userRef")
-    @JsonManagedReference
     private List <FundDonation> fundDonations;
     @OneToMany(mappedBy = "user")
     private List<GiveAwayItem> giveAwayItems;
@@ -66,4 +83,6 @@ public class User implements Serializable {
     private List<EventComment> eventComments;
     @OneToMany(mappedBy = "sender")
     private List<ChatMessage> messages;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reclamation> reclamations = new ArrayList<>();
 }
