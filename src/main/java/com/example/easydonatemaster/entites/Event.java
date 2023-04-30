@@ -1,5 +1,6 @@
 package com.example.easydonatemaster.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,9 @@ public class Event implements Serializable {
     private int duration;
     private boolean ongoing;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private  EventType eventType;
+    @JsonIgnore
     @OneToMany(mappedBy = "eventRef")
     private List<Ticket> ticketList;
     //admin
