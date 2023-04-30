@@ -22,9 +22,9 @@ public class Donation implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
     private float sum;
+    private float test;
     @Temporal(TemporalType.DATE)
     private Date donationDate;
     @ManyToOne(fetch = FetchType.EAGER)
-
     private User userRef;
 }

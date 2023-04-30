@@ -52,8 +52,8 @@ public class FundraiserService implements IFundraiser {
     @Override
     public Fundraiser modifyFundraiserById(Fundraiser fundraiser, int id) {
         Fundraiser f= fundraiserRepositoy.findById(id).orElse(null);
-        f=fundraiser;
-        return fundraiserRepositoy.save(f);
+        fundraiserRepositoy.deleteById(id);
+        return fundraiserRepositoy.save(fundraiser);
     }
 
     @Override

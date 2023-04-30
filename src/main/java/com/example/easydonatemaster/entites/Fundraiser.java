@@ -1,6 +1,7 @@
 package com.example.easydonatemaster.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,10 +36,9 @@ public class Fundraiser implements Serializable {
         private Date deadline= new Date();
     private float progressStatus;
     private float target;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User organizer;
-    @OneToMany(mappedBy = "fundraiserRef")
-    @JsonManagedReference()
+    @OneToMany(mappedBy = "fundraiserRef" , cascade =CascadeType.ALL)
     private Set<FundDonation> fundDonations= new HashSet<>();
 
 }
