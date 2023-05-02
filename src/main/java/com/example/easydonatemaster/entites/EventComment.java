@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,7 +20,10 @@ public class EventComment implements Serializable {
     private int id;
     private String content;
     @ManyToOne
+    @JsonIgnore
     private Event event;
+
     @ManyToOne
+    @JsonIgnore
     private User owner;
 }

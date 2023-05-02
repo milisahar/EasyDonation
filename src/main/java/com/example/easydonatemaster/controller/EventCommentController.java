@@ -8,25 +8,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="*")
 public class EventCommentController {
     IEventCommentService iEventCommentService;
 
     public EventCommentController(IEventCommentService iEventCommentService) {
         this.iEventCommentService = iEventCommentService;
     }
-    @PostMapping("/eventComment/add")
-    EventComment addEventComment( @RequestBody EventComment eventComment) {
-        return iEventCommentService.addEventComment(eventComment);
+        @PostMapping("/eventComment/add/{id}")
+    EventComment addEventComment( @RequestBody EventComment eventComment ,@PathVariable int id) {
+        return iEventCommentService.addEventComment(eventComment,id);
     }
-   @PostMapping("eventComment/update/{id}")
+   @PostMapping("/eventComment/update/{id}")
     EventComment updateEventComment( @RequestBody EventComment eventComment) {
         return iEventCommentService.updateEventComment(eventComment); }
-    @GetMapping("eventComment/List")
+    @GetMapping("/eventComment/List")
      List<EventComment> listEventComment() {
 
         return iEventCommentService.listEventComment();
     }
-    @DeleteMapping("eventComment/delete/{id}")
+    @DeleteMapping("/eventComment/delete/{id}")
     void deleteEeventComment(@PathVariable int id) {
     iEventCommentService.deleteEeventComment(id);
     }
