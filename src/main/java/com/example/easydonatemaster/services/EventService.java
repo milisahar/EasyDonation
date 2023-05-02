@@ -24,7 +24,8 @@ private EventRepositoy eventRepositoy;
     }
 
     @Override
-    public Event updateEvent(Event event) {
+    public Event updateEvent(Event event, int id) {
+        eventRepositoy.deleteById(id);
         return eventRepositoy.save(event);
     }
 
@@ -38,6 +39,12 @@ private EventRepositoy eventRepositoy;
         eventRepositoy.deleteById(id);
 
     }
+
+    @Override
+    public Event getEventById(int id) {
+       return eventRepositoy.findById(id).get();
+    }
+
     public void archiveEvents() {
         List<Event> events = eventRepositoy.findByOngoing(false);
         for (Event event : events) {

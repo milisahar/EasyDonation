@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface IEventService {
     Event addEvent(Event event);
-    Event updateEvent(Event event);
+    Event updateEvent(Event event, int id);
     List <Event> listEvent();
     void deleteEvent(int id);
+    Event getEventById(int id);
     public void archiveEvents();
     public void rappelEvents ();
     Long  NumberOfEvents(EventType eventType );

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 @AllArgsConstructor
 @RestController
+@CrossOrigin(origins="*")
 public class EventController {
     IEventService iEventService;
 
@@ -19,12 +20,16 @@ public class EventController {
         return iEventService.addEvent(event);
     }
 
+    @GetMapping("/event/get/{id}")
+    Event getEventById( @PathVariable int id){
+        return  iEventService.getEventById(id);
+    }
     @PostMapping("/event/update/{id}")
-    Event updateEvent(@RequestBody Event event) {
-        return iEventService.updateEvent(event);
+    Event updateEvent(@RequestBody Event event ,@PathVariable int id) {
+        return iEventService.updateEvent(event,id);
     }
 
-    @GetMapping("event/listEvent")
+    @GetMapping("/event/listEvent")
     public List<Event> listEvent() {
         return iEventService.listEvent();
     }
@@ -41,11 +46,11 @@ public class EventController {
     public Long  NumberOfEvents(@PathVariable EventType eventType) {
         return iEventService.NumberOfEvents(eventType);
     }
-    @GetMapping("event/{eventDate}")
+    @GetMapping("event/date/{eventDate}")
     public List<Event> findByEventDate(@RequestParam("eventDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate) {
         return iEventService.findByEventDate(eventDate);
     }
-    @GetMapping("event/{place}")
+    @GetMapping("event/place/{place}")
     public List<Event> findByPlace(  @PathVariable String place) {
         return iEventService.findByPlace(place);
     }
