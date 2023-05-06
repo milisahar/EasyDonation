@@ -23,4 +23,5 @@ public class Ticket implements Serializable {
     private Event eventRef;
     @ManyToOne
     private User owner;
+
 }

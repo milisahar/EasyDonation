@@ -1,0 +1,16 @@
+spring:
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: farahchouikh@outlook.fr
+    password: Easydonate123
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  main:
+    allow-bean-definition-overriding: true
+

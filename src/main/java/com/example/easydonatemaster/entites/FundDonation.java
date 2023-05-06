@@ -1,8 +1,5 @@
 package com.example.easydonatemaster.entites;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,14 +17,9 @@ public class FundDonation implements Serializable {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
-
+    private float sum;
     @ManyToOne
-    @JsonBackReference("fundraiserReference")
     private Fundraiser fundraiserRef;
     @ManyToOne
-    @JsonBackReference
     private User userRef;
-
-    private float sum;
-
 }
