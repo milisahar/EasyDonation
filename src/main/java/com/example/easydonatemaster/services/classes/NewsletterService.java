@@ -19,8 +19,6 @@ public class NewsletterService {
     @Autowired
     ArticleRepositoy articleRepository;
 
-    @Autowired
-    EmailService emailService;
 
     @Autowired
     TemplateEngine templateEngine;
@@ -28,23 +26,7 @@ public class NewsletterService {
     private static final Logger logger = LoggerFactory.getLogger(NewsletterService.class);
 
 
-    //@Scheduled(cron = "0 * * * * *", zone = "Europe/Paris")
-    public void sendNewsletter() {
-        logger.info("Sending newsletter...");
-        List<Article> articles = articleRepository.findNewArticlesSinceLastSent();
-        logger.debug("Found {} new articles since last sent", articles.size());
-        if (!articles.isEmpty()) {
-            String newsletterHtml = createNewsletterHtml(articles);
-            emailService.sendNewsletter("farahchouikh@esprit.tn", "New articles", newsletterHtml);
-            logger.debug("Sent newsletter email to farahchouikh@esprit.tn with {} new articles", articles.size());
-            articleRepository.updateLastSentDate(LocalDateTime.now()); // pass the current date and time as argument
-            logger.debug("Updated last sent date to {}", LocalDateTime.now());
-        } else {
-            logger.debug("No new articles found since last sent");
-        }
-        logger.info("Newsletter sent.");
 
-    }
 
     private String createNewsletterHtml(List<Article> articles) {
          Context context = new Context();
