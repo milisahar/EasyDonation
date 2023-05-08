@@ -24,10 +24,13 @@ public class CheckPointService implements ICheckPointService{
     public CheckPoint addCheckPoint(CheckPoint checkPoint , int id) {
 
         Task task  = taskService.getTaskById(id);
-        CheckPoint checkPointSaved = checkPointRepositoy.save(checkPoint);
+        CheckPoint checkPointSaved = checkPoint;
+
+        checkPointSaved.setTask(task);
         task.getCheckPoints().add(checkPointSaved);
         task.setProgress(Progress.INPROGRESS);
         taskService.updateTask(task);
+        checkPointRepositoy.save(checkPointSaved);
         return checkPointSaved;
 
 
