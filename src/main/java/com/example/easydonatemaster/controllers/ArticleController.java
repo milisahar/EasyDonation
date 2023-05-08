@@ -22,12 +22,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import javax.print.Doc;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
 
 @CrossOrigin(origins ="http://localhost:4200")
@@ -36,10 +36,10 @@ import java.util.List;
 public class ArticleController {
     private static final Logger log = LoggerFactory.getLogger(ArticleController.class);
 
- @Autowired
- ArticleService as;
- @Autowired
- ArticleRepositoy ar;
+    @Autowired
+    ArticleService as;
+    @Autowired
+    ArticleRepositoy ar;
     @Autowired
     CategoryRepository cr;
 
@@ -115,13 +115,7 @@ public class ArticleController {
     }
 
 
-    @PostMapping("article/{id}/image")
-    public ResponseEntity<String> uploadImage(
-            @PathVariable Integer id,
-            @RequestParam("img") MultipartFile img) {
-        as.uploadImage(id, img);
-        return ResponseEntity.ok("Image uploaded successfully.");
-    }
+
 
     @GetMapping("/article/mostLikedArticle")
     public ResponseEntity<Article> retrieveMostLikedArticle(){
@@ -131,7 +125,17 @@ public class ArticleController {
         } else {
             return ResponseEntity.ok(mostLikedArticle);
         }
+
+
+
     }
+
+    @PutMapping(path = "/addImage/{id}", consumes = {MULTIPART_FORM_DATA_VALUE})
+    public void addImage(@RequestParam MultipartFile file, @PathVariable int id) throws IOException {
+        as.addImage(id , file);
+    }
+
+
     @GetMapping("/articles/most-comments")
     public Article getArticleWithMostComments() {
         return as.getArticleWithMostComments();
@@ -211,6 +215,23 @@ public class ArticleController {
     public List<Article> getArticlesByCategory(@PathVariable String categoryName) {
         return as.getArticlesByCategory(categoryName);
     }
+
+    @GetMapping("/category/most-articles")
+    public ResponseEntity<Map<String, Object>> getCategoryWithMostArticles() {
+        Map.Entry<String, Integer> category = as.getCategoryNameWithMostArticles();
+        if (category != null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("categoryName", category.getKey());
+            response.put("articleCount", category.getValue());
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+
+
 
 
 
