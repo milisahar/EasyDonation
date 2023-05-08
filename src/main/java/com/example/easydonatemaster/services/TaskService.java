@@ -114,7 +114,7 @@ public class TaskService implements ITaskService{
     }
 
     //@Scheduled(cron = "*/10 * * * * *")
-    @Scheduled(cron = "* */15 * * * *")
+    //@Scheduled(cron = "* * * */15 * *")
     public void affermations() {
         List<String> affirmations = new ArrayList<>();
         affirmations.add("\n \n I surrender my heart to the universe. \n EasyDonate appreciate ALL your EFFORTS, your TIME and ENERGY that you DONATE and wants to thank you by it's  way <3");
