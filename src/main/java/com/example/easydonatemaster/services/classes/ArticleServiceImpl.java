@@ -2,7 +2,6 @@ package com.example.easydonatemaster.services.classes;
 
 import com.example.easydonatemaster.entites.Article;
 import com.example.easydonatemaster.entites.ArticleComment;
-import com.example.easydonatemaster.entites.Category;
 import com.example.easydonatemaster.repositories.ArticleRepositoy;
 import com.example.easydonatemaster.services.interfaces.ArticleService;
 import lombok.AllArgsConstructor;
@@ -11,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -116,6 +117,17 @@ public class ArticleServiceImpl implements ArticleService {
         return article.getArticleComments();
     }
 
+    @Override
+    public void uploadImage(Integer id, MultipartFile img) {
+        Article product = ar.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found."));
+        try {
+            product.setImg(img.getBytes());
+            ar.save(product);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image.", e);
+        }
+    }
 
     @Override
     public Article getArticleWithMostComments() {
@@ -134,59 +146,18 @@ public class ArticleServiceImpl implements ArticleService {
 
         return articleWithMostComments;
     }
+@Override
     public List<Article> getArticlesByCategory(String categoryName) {
-        log.debug("Inside getArticlesByCategory method");
         List<Article> articles = ar.findAll();
-        log.debug("Retrieved all articles: {}", articles);
         List<Article> articlesByCategory = new ArrayList<>();
         for (Article article : articles) {
-            Category articleCategory = article.getCategory();
-            if (articleCategory != null && articleCategory.getName().equals(categoryName)) {
-                log.debug("Adding article to category: {}", article);
+            if (article.getCategory().getName().equals(categoryName)) {
                 articlesByCategory.add(article);
-            } else {
-                log.debug("Skipping article: {}", article);
             }
         }
-
-        log.debug("Returning articles by category: {}", articlesByCategory);
         return articlesByCategory;
     }
 
-    @Override
-    public void addImage(int id, MultipartFile image) throws IOException {
-        Article article = ar.findById(id).orElse(null);
-
-        String filename = StringUtils.cleanPath(image.getOriginalFilename());
-        if(filename.contains("..")){
-            System.out.println("!!! Not a valid File");
-        }
-        article.setImg(Base64.getEncoder().encodeToString(image.getBytes()));
-
-        ar.save(article);
-    }
-    @Override
-    public Map.Entry<String, Integer> getCategoryNameWithMostArticles() {
-        Map<String, Integer> categoryNameCounts = new HashMap<>();
-
-        List<Article> articles = ar.findAll();
-        for (Article article : articles) {
-            Category category = article.getCategory();
-            if (category != null) {
-                String categoryName = category.getName();
-                categoryNameCounts.merge(categoryName, 1, Integer::sum);
-            }
-        }
-
-        Map.Entry<String, Integer> categoryNameWithMostArticles = null;
-        for (Map.Entry<String, Integer> entry : categoryNameCounts.entrySet()) {
-            if (categoryNameWithMostArticles == null || entry.getValue() > categoryNameWithMostArticles.getValue()) {
-                categoryNameWithMostArticles = entry;
-            }
-        }
-
-        return categoryNameWithMostArticles;
-    }
 
 
 }

@@ -11,7 +11,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 @Getter
@@ -29,12 +32,13 @@ public class Article implements Serializable {
     private String description;
     @Column(columnDefinition = "BLOB")
     @Lob
-   private String img;
+
+   private Byte[] img;
     @ProfanityFilter
     private String content;
 
     @Column
-    private Date publishDate;
+    private LocalDateTime publishDate;
 
     @Column
     private LocalDateTime lastSentDate;
@@ -50,11 +54,11 @@ public class Article implements Serializable {
 
 
 
-    public Date getPublishDate() {
+    public LocalDateTime getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Date publishDate) {
+    public void setPublishDate(LocalDateTime publishDate) {
         this.publishDate = publishDate;
     }
 
@@ -75,10 +79,8 @@ public class Article implements Serializable {
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", content='" + content + '\'' +
-                ", publishDate='" + publishDate + '\'' +
                 '}';
     }
-
 
 
     public LocalDateTime getLastSentDate() {
@@ -161,10 +163,14 @@ public class Article implements Serializable {
         this.description = description;
     }
 
+    public Byte[] getImg() {
+        return img;
+    }
 
 
-
-
+    public void setImg(byte[] img) {
+        this.img = ArrayUtils.toObject(img);
+    }
 
     public String getContent() {
         return content;

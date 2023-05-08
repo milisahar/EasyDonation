@@ -40,7 +40,4 @@ public interface ArticleRepositoy extends JpaRepository<Article, Integer> {
 
     List<Article> findByTagsIn(List<String> tags);
 
-    @Query("SELECT a FROM Article a JOIN a.category c WHERE c.name = :categoryName")
-    List<Article> findByCategoryName(@Param("categoryName") String categoryName);
 }
-

@@ -36,7 +36,6 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
         return acr.save(e);
     }
 
-
     @Override
     public ArticleComment updateArticleComment(Integer id, ArticleComment ac) {
         return acr.save(ac);
@@ -56,10 +55,9 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
 
     @Override
     public void removeArticleComment(Integer id) {
-        acr.deleteById(id);
-        acr.flush();
-    }
 
+         acr.deleteById(id);
+    }
 
     @Override
     public void assignArticleCommentToComment(Integer ACId, Integer AId) {

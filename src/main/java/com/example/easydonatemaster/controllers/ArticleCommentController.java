@@ -8,11 +8,9 @@ import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.xml.ws.Response;
 import java.util.List;
 @RestController
 @RequestMapping("/ControllerArticleComment")
@@ -58,15 +56,9 @@ public class ArticleCommentController {
     }
 
     @DeleteMapping("/deleteArticleComment/{id}")
-    public ResponseEntity<String> deleteArticleComment(@PathVariable("id")int id) {
-        try {
-            acs.removeArticleComment(id);
-            return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public void deleteArticleComment(@PathVariable("id")int id) {
+        acs.removeArticleComment(id);
     }
-
 
     @GetMapping("/displayArticleCommentsByArticle/{articleId}")
     public List<ArticleComment> displayArticleCommentsByArticle(@PathVariable("articleId") int articleId) {
