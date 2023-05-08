@@ -23,8 +23,6 @@ import java.util.Set;
 
         @Autowired
         private CategoryService categoryService;
-
-
     @Autowired
     private CategoryRepository categoryRepository;
     @PostMapping("/matchArticleToCategory")

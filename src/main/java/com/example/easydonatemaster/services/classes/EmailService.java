@@ -34,24 +34,5 @@ public class EmailService {
             logger.error("Failed to send email", e);
             throw new RuntimeException("Failed to send email", e);
         }
-
-
     }
-
-    public void sendTestEmail(String to, String subject, String htmlContent) {
-        logger.info("Sending test email to {} with subject {}", to, subject);
-        MimeMessage message = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(recipientEmail);
-            helper.setSubject("whatever");
-            helper.setText(htmlContent, true);
-            mailSender.send(message);
-            logger.info("Test email sent successfully");
-        } catch (MessagingException e) {
-            logger.error("Failed to send test email", e);
-            throw new RuntimeException("Failed to send test email", e);
-        }
-    }
-
 }

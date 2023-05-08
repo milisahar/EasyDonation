@@ -1,6 +1,5 @@
 package com.example.easydonatemaster.controllers;
 
-import com.example.easydonatemaster.services.classes.EmailService;
 import com.example.easydonatemaster.services.classes.PDFGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,16 +19,4 @@ import java.util.Date;
 @RequestMapping("")
 public class PDFController {
 
-
-    @Autowired
-    EmailService es;
-
-    @GetMapping("/send-email")
-    public void sendEmail(HttpServletResponse response) throws IOException {
-        String to = "farah.chouikh@esprit.com";
-        String subject = "Test Email";
-        String htmlContent = "<h1>This is a test email</h1>";
-        es.sendTestEmail(to, subject, htmlContent);
-        response.getWriter().print("Email sent successfully");
-    }
 }

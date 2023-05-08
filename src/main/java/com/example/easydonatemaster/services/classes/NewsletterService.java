@@ -28,7 +28,7 @@ public class NewsletterService {
     private static final Logger logger = LoggerFactory.getLogger(NewsletterService.class);
 
 
-    @Scheduled(cron = "1 * * * * *", zone = "Europe/Paris")
+    //@Scheduled(cron = "0 * * * * *", zone = "Europe/Paris")
     public void sendNewsletter() {
         logger.info("Sending newsletter...");
         List<Article> articles = articleRepository.findNewArticlesSinceLastSent();

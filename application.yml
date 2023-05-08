@@ -1,9 +1,9 @@
 spring:
   mail:
-    host: smtp.office365.com
+    host: smtp.gmail.com
     port: 587
-    username: farahchouikh@outlook.fr
-    password: Easydonate123
+    username: easydonatenewsletter@gmail.com
+    password: farahchouikh
     properties:
       mail:
         smtp:
