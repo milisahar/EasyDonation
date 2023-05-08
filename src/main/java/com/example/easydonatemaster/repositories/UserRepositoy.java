@@ -1,7 +1,10 @@
 package com.example.easydonatemaster.repositories;
 
+import com.example.easydonatemaster.entites.HelpDemand;
 import com.example.easydonatemaster.entites.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepositoy extends JpaRepository<User, Integer> {
+    //task module
+    User findByTaskListHelpDemands (HelpDemand helpDemand);
 }

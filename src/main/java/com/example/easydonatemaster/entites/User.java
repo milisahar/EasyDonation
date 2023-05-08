@@ -57,12 +57,9 @@ public class User implements Serializable {
     @JsonIgnore
     private List<Donation> donationList;
 
-    @OneToMany(mappedBy = "sender")
-    private Set<HelpDemand> helpDemands;
+
     @OneToMany (mappedBy = "assignedTo")
     private List <Task> taskList;
-    @OneToMany (cascade = CascadeType.ALL)
-    private List<CheckPoint> checkPoints;
 
     @OneToMany (mappedBy = "publisher")
     private List<Article> articles;
