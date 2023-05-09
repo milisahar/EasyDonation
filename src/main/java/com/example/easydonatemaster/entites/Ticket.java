@@ -18,7 +18,6 @@ public class Ticket implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
     private String reference;
-
     @ManyToOne
     private Event eventRef;
     @ManyToOne

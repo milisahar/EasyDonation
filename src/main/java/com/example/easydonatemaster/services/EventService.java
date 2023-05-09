@@ -5,9 +5,15 @@ import com.example.easydonatemaster.entites.EventType;
 import com.example.easydonatemaster.repositories.EventRepositoy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Slf4j
@@ -15,7 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 public class EventService implements IEventService{
 private EventRepositoy eventRepositoy;
-
+    @Autowired
+    private JavaMailSender mailSender;
 
 
     @Override
@@ -51,12 +58,17 @@ private EventRepositoy eventRepositoy;
             eventRepositoy.delete(event);
         }
     }
-    @Scheduled(cron = "0 0 0 1/31 * * ")
+    @Scheduled(cron = "*/10 * * * * *")
     public void rappelEvents () {
+        SimpleMailMessage message = new SimpleMailMessage();
+        String mail = "balkiss.ghanmi@esprit.tn";
         for (Event e : listEvent()
-        ) {
-            log.info("L'evenement: " +e.getTitle()+" a "+ e.getTicketList().stream().count()+ "participations! ");
-        }
+            ) {
+            message.setTo(mail);
+            message.setSubject("event");
+            message.setText("L'evenement: " +e.getTitle()+" a "+ e.getTicketList().stream().count()+ "participations! ");
+            mailSender.send(message);
+            }
     }
 
     @Override
@@ -66,7 +78,20 @@ private EventRepositoy eventRepositoy;
 
     @Override
     public List<Event> findByEventDate(Date eventDate) {
-        return  eventRepositoy.findByEventDate(eventDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(eventDate);
+        List<Event> events =new ArrayList<>();
+        List<Event> eventsdat =new ArrayList<>();
+        events= eventRepositoy.findAll();
+        for (Event event :events){
+            SimpleDateFormat dateevent = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDateEvent = dateFormat.format( event.getEventDate());
+            if(formattedDate.equals(formattedDateEvent)){
+                eventsdat.add(event);
+            }
+        }
+
+        return eventsdat;
     }
 
     @Override

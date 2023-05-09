@@ -47,7 +47,7 @@ public class EventController {
         return iEventService.NumberOfEvents(eventType);
     }
     @GetMapping("event/date/{eventDate}")
-    public List<Event> findByEventDate(@RequestParam("eventDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate) {
+    public List<Event> findByEventDate(@PathVariable("eventDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate) {
         return iEventService.findByEventDate(eventDate);
     }
     @GetMapping("event/place/{place}")
